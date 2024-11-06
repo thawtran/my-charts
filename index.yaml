@@ -3,7 +3,17 @@ entries:
   tst-helm-chart-pkg:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-11-06T15:59:02.531116+07:00"
+    created: "2024-11-06T16:30:46.928813+07:00"
+    description: A Helm chart for Kubernetes
+    digest: 6ae7244943e533e7d188c00c62ea7346ff49eae0b472372ac614c8bbc36d5245
+    name: tst-helm-chart-pkg
+    type: application
+    urls:
+    - https://thawtran.github.io/my-charts/tst-helm-chart-pkg-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-11-06T16:30:46.928287+07:00"
     description: A Helm chart for Kubernetes
     digest: 905cbcd45fcd43a3832b121a2c78eb3c764694d907116db78eef7a7b9a041833
     name: tst-helm-chart-pkg
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://thawtran.github.io/my-charts/tst-helm-chart-pkg-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-06T15:59:02.530467+07:00"
+generated: "2024-11-06T16:30:46.927523+07:00"
