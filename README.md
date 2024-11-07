@@ -10,7 +10,7 @@ https://thawtran.github.io/my-charts
 https://thawtran.github.io/my-charts/index.yaml
 
 
-## How to work
+## Helm chart works
 
 ### 1. Create a chart
 ```shell
@@ -91,7 +91,109 @@ total 32
 
 ### 7. Repeat the step #4
 
-## Helm repo commands
+### A. Helm chart syntax check
+```shell
+➜  …/Kubernetes/helm-myprj-01 helm lint tinyweb-app-mongo
+==> Linting tinyweb-app-mongo
+[INFO] Chart.yaml: icon is recommended
+[ERROR] templates/deployment/mongoexp.yaml: unable to parse YAML: error converting YAML to JSON: yaml: line 20: did not find expected key
+
+Error: 1 chart(s) linted, 1 chart(s) failed
+➜  …/Kubernetes/helm-myprj-01
+
+➜  …/Kubernetes/helm-myprj-01 helm lint tinyweb-app-mongo
+==> Linting tinyweb-app-mongo
+[INFO] Chart.yaml: icon is recommended
+[ERROR] templates/deployment/tinyweb.yaml: unable to parse YAML: error converting YAML to JSON: yaml: line 20: did not find expected key
+
+Error: 1 chart(s) linted, 1 chart(s) failed
+➜  …/Kubernetes/helm-myprj-01
+```
+
+### B. Helm chart debug
+```shell
+➜  …/Kubernetes/helm-myprj-01
+➜  …/Kubernetes/helm-myprj-01 helm template debug-tinyweb ./tinyweb-app-mongo --namespace my-tinyweb --debug
+install.go:224: 2024-11-07 19:30:01.446957 +0700 +07 m=+0.034895626 [debug] Original chart version: ""
+install.go:241: 2024-11-07 19:30:01.44744 +0700 +07 m=+0.035378251 [debug] CHART PATH: /Users/thaovtran/Learns/Kubernetes/helm-myprj-01/tinyweb-app-mongo
+
+---
+# Source: tinyweb-app-mongo/templates/ingress/tinyweb.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: debug-tinyweb-tinyweb-app-mongo-webapp-ingress
+  namespace: my-tinyweb
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/"
+...
+...
+...
+Error: YAML parse error on tinyweb-app-mongo/templates/deployment/tinyweb.yaml: error converting YAML to JSON: yaml: line 20: did not find expected key
+helm.go:86: 2024-11-07 19:30:01.454995 +0700 +07 m=+0.042934168 [debug] error converting YAML to JSON: yaml: line 20: did not find expected key
+YAML parse error on tinyweb-app-mongo/templates/deployment/tinyweb.yaml
+helm.sh/helm/v3/pkg/releaseutil.(*manifestFile).sort
+	helm.sh/helm/v3/pkg/releaseutil/manifest_sorter.go:144
+helm.sh/helm/v3/pkg/releaseutil.SortManifests
+	helm.sh/helm/v3/pkg/releaseutil/manifest_sorter.go:104
+helm.sh/helm/v3/pkg/action.(*Configuration).renderResources
+	helm.sh/helm/v3/pkg/action/action.go:168
+helm.sh/helm/v3/pkg/action.(*Install).RunWithContext
+	helm.sh/helm/v3/pkg/action/install.go:316
+main.runInstall
+	helm.sh/helm/v3/cmd/helm/install.go:316
+main.newTemplateCmd.func2
+	helm.sh/helm/v3/cmd/helm/template.go:95
+github.com/spf13/cobra.(*Command).execute
+	github.com/spf13/cobra@v1.8.1/command.go:985
+github.com/spf13/cobra.(*Command).ExecuteC
+	github.com/spf13/cobra@v1.8.1/command.go:1117
+github.com/spf13/cobra.(*Command).Execute
+	github.com/spf13/cobra@v1.8.1/command.go:1041
+main.main
+	helm.sh/helm/v3/cmd/helm/helm.go:85
+runtime.main
+	runtime/proc.go:272
+runtime.goexit
+	runtime/asm_arm64.s:1223
+➜  …/Kubernetes/helm-myprj-01
+```
+
+### C. Install/Upgrade a Helm chart
+```shell
+➜  …/Users/thaovtran helm upgrade --install tinyweb-app-mongo Kubernetes/helm-myprj-01/tinyweb-app-mongo-0.1.0.tgz --create-namespace --namespace tinyweb-app-mongo-ns
+Release "tinyweb-app-mongo" has been upgraded. Happy Helming!
+NAME: tinyweb-app-mongo
+LAST DEPLOYED: Thu Nov  7 20:00:59 2024
+NAMESPACE: tinyweb-app-mongo
+STATUS: deployed
+REVISION: 3
+NOTES:
+1. Get the application URL by running these commands:
+
+2. Access Mongo Express using the following URL http://mongodb-helm.k8s.local if ingress is enabled.
+➜  …/Users/thaovtran
+```
+```shell
+helm upgrade --install tinyweb-app my-helm-charts/tinyweb-app-mongo --create-namespace --namespace tinyweb-app-ns
+helm upgrade tinyweb-app my-helm-charts/tinyweb-app-mongo --create-namespace --namespace tinyweb-app-ns
+```
+
+### D. Uninstall/Install a Helm chart
+```shell
+helm uninstall tinyweb-app --namespace tinyweb-app-ns
+helm install tinyweb-app my-helm-charts/tinyweb-app-mongo --create-namespace --namespace tinyweb-app-ns
+helm install tinyweb-app Kubernetes/helm-myprj-01/tinyweb-app-mongo-0.1.0.tgz --create-namespace --namespace tinyweb-app-ns
+```
+
+### E. Staus check Helm chart installation
+```shell
+helm status tinyweb-app --namespace tinyweb-app-ns
+```
+
+
+## Helm repo works
 ### List repos
 ```shell
 ➜  …/Users/thaovtran
